@@ -33,8 +33,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-app = Application.builder().token(BOT_TOKEN).build()
+import asyncio
 
-app.add_handler(CommandHandler("start", start))
+async def main():
+    app = Application.builder().token(BOT_TOKEN).build()
 
-app.run_polling()
+    app.add_handler(CommandHandler("start", start))
+
+    await app.initialize()
+    await app.start()
+    await app.updater.start_polling()
+
+    await asyncio.Event().wait()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
